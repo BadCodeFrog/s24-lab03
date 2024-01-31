@@ -84,6 +84,10 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
+        // Without any enqueues, the queue should be empty
+        // and dequeue should return null
+        assertNull(mQueue.dequeue());
+
         // After enqueue, the queue should contain the elements
         for (int i = 0; i < testList.size(); i++) {
             mQueue.enqueue(testList.get(i));
