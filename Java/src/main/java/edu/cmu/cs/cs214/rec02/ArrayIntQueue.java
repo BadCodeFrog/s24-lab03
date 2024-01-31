@@ -96,7 +96,7 @@ public class ArrayIntQueue implements IntQueue {
      * Increases the capacity of this <tt>ArrayIntQueue</tt> instance, if
      * necessary, to ensure that it can hold at least size + 1 elements.
      */
-    private void ensureCapacity() {
+    public void ensureCapacity() {
         if (size == elementData.length) {
             int oldCapacity = elementData.length;
             int newCapacity = 2 * oldCapacity + 1;

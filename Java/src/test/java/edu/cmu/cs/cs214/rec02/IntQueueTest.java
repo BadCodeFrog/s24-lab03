@@ -197,4 +197,23 @@ public class IntQueueTest {
             assertEquals(Integer.valueOf(i), mQueue.dequeue());
         }
     }
+    @Test
+    public void testCapacity() {
+        // 9 elements in the queue
+        for (int i = 0; i < 10; i++) {
+            mQueue.enqueue(i);
+        }
+        // 8 elements in the queue
+        mQueue.dequeue();
+        // 10 elements in the queue
+        for (int i = 10; i < 12; i++) {
+            mQueue.enqueue(i);
+        }
+        ((ArrayIntQueue) mQueue).ensureCapacity();
+        assertEquals(11, mQueue.size());
+        assertEquals(1, mQueue.peek().intValue());
+        mQueue.enqueue(12);
+        assertEquals(1, mQueue.dequeue().intValue());
+        assertEquals(11, mQueue.size());
+    }
 }
