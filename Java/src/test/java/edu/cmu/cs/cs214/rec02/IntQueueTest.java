@@ -31,6 +31,7 @@ public class IntQueueTest {
 
     private IntQueue mQueue;
     private List<Integer> testList;
+    private static final int INITIAL_SIZE = 10;
 
     /**
      * Called before each test.
@@ -135,5 +136,65 @@ public class IntQueueTest {
         // After clear, the queue should be empty
         mQueue.clear();
         assertTrue(mQueue.isEmpty());
+    }
+
+    @Test
+    public void testEnsureCapacity() {
+        // Fill the queue to its initial capacity
+        for (int i = 0; i < INITIAL_SIZE; i++) {
+            mQueue.enqueue(i);
+        }
+        // Check size before exceeding capacity
+        assertEquals(INITIAL_SIZE, mQueue.size());
+
+        // Exceed the initial capacity
+        mQueue.enqueue(INITIAL_SIZE);
+
+        // Check size after exceeding capacity
+        assertEquals(INITIAL_SIZE + 1, mQueue.size());
+
+        for (int i = 0; i <= (2 * INITIAL_SIZE + 1); i++) {
+            // Check if all elements are in correct order after resizing
+            if (i <= INITIAL_SIZE) {
+                assertEquals(Integer.valueOf(i), mQueue.dequeue());
+            } else {
+                // Check if the queue is still working after resizing
+                assertNull(mQueue.dequeue());
+            }
+        }
+    }
+
+    @Test
+    public void testWrapAround() {
+        // Fill the queue to its initial capacity
+        for (int i = 0; i < INITIAL_SIZE - 1; i++) {
+            mQueue.enqueue(i);
+        }
+
+        // Dequeue some elements
+        int numDequeues = 3;
+        for (int i = 0; i < numDequeues; i++) {
+            mQueue.dequeue();
+        }
+
+        // Enqueue some elements to trigger resizing and wrap around
+        for (int i = INITIAL_SIZE - 1; i < INITIAL_SIZE + numDequeues; i++) {
+            mQueue.enqueue(i);
+        }
+
+        // Check the size of the queue after resizing
+        assertEquals(INITIAL_SIZE, mQueue.size());
+
+        // for (int i = numDequeues; i <= (INITIAL_SIZE + 1); i++) {
+        //     // Check if all elements are in correct order after resizing
+        //     assertEquals(Integer.valueOf(i), mQueue.dequeue());
+        // }
+
+        for (int i = 0; i < INITIAL_SIZE - numDequeues; i++) {
+            mQueue.dequeue();
+        }
+        for (int i = INITIAL_SIZE; i < INITIAL_SIZE + numDequeues; i++) {
+            assertEquals(Integer.valueOf(i), mQueue.dequeue());
+        }
     }
 }
