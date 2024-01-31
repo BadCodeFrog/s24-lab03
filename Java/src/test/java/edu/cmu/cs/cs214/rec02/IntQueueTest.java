@@ -38,8 +38,8 @@ public class IntQueueTest {
     @Before
     public void setUp() {
         // comment/uncomment these lines to test each class
-        mQueue = new LinkedIntQueue();
-    //    mQueue = new ArrayIntQueue();
+        // mQueue = new LinkedIntQueue();
+        mQueue = new ArrayIntQueue();
 
         testList = new ArrayList<>(List.of(1, 2, 3));
     }
@@ -52,20 +52,24 @@ public class IntQueueTest {
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        // After enqueue, the queue should not be empty
+        mQueue.enqueue(1);
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        // Without any enqueues, the queue should be empty
+        // and peek should return null
+        assertNull(mQueue.peek());
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        // After enqueue, the queue should not be empty
+        // and peek should return the first element
+        mQueue.enqueue(1);
+        assertEquals(1, mQueue.peek().intValue());
     }
 
     @Test
@@ -80,8 +84,21 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        // After enqueue, the queue should contain the elements
+        for (int i = 0; i < testList.size(); i++) {
+            mQueue.enqueue(testList.get(i));
+        }
+        // After each dequeue, the queue should return the element at the head of the queue. 
+        // Returns null if the queue is empty.
+        for (int i = 0; i < testList.size(); i++) {
+            assertEquals(testList.get(i), mQueue.dequeue());
+            assertEquals(testList.size() - i - 1, mQueue.size());
+            if (i != testList.size() - 1) {
+                assertEquals(testList.get(i + 1), mQueue.peek());
+            } else {
+                assertNull(mQueue.peek());
+            }
+        }
     }
 
     @Test
@@ -105,5 +122,14 @@ public class IntQueueTest {
         }
     }
 
-
+    @Test
+    public void testClear() {
+        // After enqueue, the queue should contain the elements
+        for (int i = 0; i < testList.size(); i++) {
+            mQueue.enqueue(testList.get(i));
+        }
+        // After clear, the queue should be empty
+        mQueue.clear();
+        assertTrue(mQueue.isEmpty());
+    }
 }
